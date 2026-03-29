@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=speed-editor-rebind
+Exec=speed-editor-rebind
+Icon=speed-editor-rebind
+Categories=Development;
+Terminal=false
+Keywords=wails
+Version=1.0
+StartupNotify=false

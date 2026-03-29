@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A speed-editor-rebind application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/speed-editor-rebind %u
+Terminal=false
+Type=Application
+Icon=speed-editor-rebind
+Categories=Utility;
+StartupWMClass=speed-editor-rebind
+
+ 
