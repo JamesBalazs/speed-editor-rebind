@@ -1,21 +1,25 @@
 import { Events } from "@wailsio/runtime";
-import { GreetService } from "../bindings/github.com/JamesBalazs/speed-editor-rebind";
+import { SpeedEditorService } from "../bindings/github.com/JamesBalazs/speed-editor-rebind";
 
 const resultElement = document.getElementById("result");
-const timeElement = document.getElementById("time");
+const connectionElement = document.getElementById("connection");
 
-window.doGreet = async () => {
-    let name = document.getElementById("name").value;
-    if (!name) {
-        name = "anonymous";
-    }
-    try {
-        resultElement.innerText = await GreetService.Greet(name);
-    } catch (err) {
-        console.error(err);
-    }
-};
+let connected = false;
 
-Events.On("time", (time) => {
-    timeElement.innerText = time.data;
+Events.On("heartbeat", (event) => {
+    if (event.data.Error != "") {
+        connectionElement.innerText = event.data.Error;
+    } else if (connected === false && event.data.Connected == true) {
+        connected = true;
+
+        connectionElement.innerText = `Speed Editor connected. Serial number: ${event.data.Serial}`;
+    } else if (connected === true && event.data.Connected === false) {
+        connected = false;
+
+        connectionElement.innerText = "Waiting for connection...";
+    }
 });
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     SpeedEditorService.Connect().catch((err) => console.error(err));
+// });

@@ -2,7 +2,11 @@ module github.com/JamesBalazs/speed-editor-rebind
 
 go 1.26.1
 
-require github.com/wailsapp/wails/v3 v3.0.0-alpha.74
+require (
+	github.com/JamesBalazs/speed-editor-client v1.1.0
+	github.com/sstallion/go-hid v0.15.0
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.74
+)
 
 require (
 	dario.cat/mergo v1.0.2 // indirect

@@ -7,9 +7,8 @@
 import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 /**
- * @param {string} name
- * @returns {$CancellablePromise<string>}
+ * @returns {$CancellablePromise<void>}
  */
-export function Greet(name) {
-    return $Call.ByID(1411160069, name);
+export function Connect() {
+    return $Call.ByID(3376674851);
 }

@@ -4,8 +4,11 @@ import (
 	"embed"
 	_ "embed"
 	"log"
+	"strings"
 	"time"
 
+	speedEditor "github.com/JamesBalazs/speed-editor-client"
+	"github.com/sstallion/go-hid"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -21,14 +24,20 @@ func init() {
 	// Register a custom event whose associated data type is string.
 	// This is not required, but the binding generator will pick up registered events
 	// and provide a strongly typed JS/TS API for them.
-	application.RegisterEvent[string]("time")
+	application.RegisterEvent[Heartbeat]("heartbeat")
 }
 
-// main function serves as the application's entry point. It initializes the application, creates a window,
-// and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
-// logs any error that might occur.
-func main() {
+var connected bool
 
+type Heartbeat struct {
+	Connected bool
+	Error     string
+	Serial    string
+}
+
+// main function serves as the application's entry point. It initializes the application and creates a window.
+// It subsequently runs the application and logs any error that might occur.
+func main() {
 	// Create a new Wails application by providing the necessary options.
 	// Variables 'Name' and 'Description' are for application metadata.
 	// 'Assets' configures the asset server with the 'FS' variable pointing to the frontend files.
@@ -38,7 +47,7 @@ func main() {
 		Name:        "speed-editor-rebind",
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
-			application.NewService(&GreetService{}),
+			application.NewService(&SpeedEditorService{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -64,13 +73,33 @@ func main() {
 		URL:              "/",
 	})
 
-	// Create a goroutine that emits an event containing the current time every second.
-	// The frontend can listen to this event and update the UI accordingly.
+	if err := hid.Init(); err != nil {
+		log.Fatal(err)
+	}
+	defer hid.Exit()
+
 	go func() {
 		for {
-			now := time.Now().Format(time.RFC1123)
-			app.Event.Emit("time", now)
-			time.Sleep(time.Second)
+			client, err := speedEditor.NewClient()
+			if err != nil && strings.Contains(err.Error(), "No HID devices with requested VID/PID found in the system.") {
+				continue
+			} else if err != nil {
+				app.Event.Emit("heartbeat", Heartbeat{Connected: false, Error: err.Error()})
+				time.Sleep(2 * time.Second)
+				continue
+			}
+
+			err = client.Authenticate()
+			if err != nil {
+				app.Event.Emit("heartbeat", Heartbeat{Connected: false, Error: err.Error()})
+				time.Sleep(2 * time.Second)
+				continue
+			}
+
+			deviceInfo := client.GetDeviceInfo()
+
+			app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
+			break
 		}
 	}()
 
