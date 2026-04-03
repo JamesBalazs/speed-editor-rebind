@@ -8,5 +8,13 @@ export {
 };
 
 export {
-    Heartbeat
+    Heartbeat,
+    Key
 } from "./models.js";
+
+import * as $models from "./models.js";
+
+/**
+ * KeyGrid represents the keyboard layout as map[column][row]Key
+ * @typedef {$models.KeyGrid} KeyGrid
+ */

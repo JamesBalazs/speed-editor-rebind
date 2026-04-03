@@ -8,6 +8,13 @@ Fedora deps for wails3:
 
 ```sudo dnf install gtk3-devel webkit2gtk4.1-devel pkgconf gcc```
 
+Generate keyboard layout:
+
+```
+go run cmd/generate-layout/main.go > frontend/partials/keyboard.html
+```
+(copy into index.html)
+
 Install wails3 CLI:
 
 ```

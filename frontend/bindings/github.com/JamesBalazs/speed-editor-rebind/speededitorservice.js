@@ -6,9 +6,48 @@
 // @ts-ignore: Unused imports
 import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import * as application$0 from "../../wailsapp/wails/v3/pkg/application/models.js";
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import * as $models from "./models.js";
+
 /**
+ * EmitKeyPress emits a key press event to the frontend (for testing/manual triggering)
+ * @param {number[]} keyIds
  * @returns {$CancellablePromise<void>}
  */
-export function Connect() {
-    return $Call.ByID(3376674851);
+export function EmitKeyPress(keyIds) {
+    return $Call.ByID(880009122, keyIds);
 }
+
+/**
+ * GetKeys returns all keys from the Speed Editor layout organized by column and row
+ * @returns {$CancellablePromise<$models.KeyGrid>}
+ */
+export function GetKeys() {
+    return $Call.ByID(3284359353).then(/** @type {($result: any) => any} */(($result) => {
+        return $$createType0($result);
+    }));
+}
+
+/**
+ * @param {application$0.App | null} app
+ * @returns {$CancellablePromise<void>}
+ */
+export function Start(app) {
+    return $Call.ByID(706794645, app);
+}
+
+// Private type creation functions
+var $$createType0 = /** @type {(...args: any[]) => any} */(function $$initCreateType0(...args) {
+    if ($$createType0 === $$initCreateType0) {
+        $$createType0 = $$createType3;
+    }
+    return $$createType0(...args);
+});
+const $$createType1 = $models.Key.createFrom;
+const $$createType2 = $Create.Map($Create.Any, $$createType1);
+const $$createType3 = $Create.Map($Create.Any, $$createType2);

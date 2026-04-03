@@ -25,6 +25,7 @@ func init() {
 	// This is not required, but the binding generator will pick up registered events
 	// and provide a strongly typed JS/TS API for them.
 	application.RegisterEvent[Heartbeat]("heartbeat")
+	application.RegisterEvent[[]uint16]("keyPress")
 }
 
 var connected bool

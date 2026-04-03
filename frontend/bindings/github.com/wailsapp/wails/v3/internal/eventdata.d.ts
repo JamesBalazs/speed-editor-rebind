@@ -13,6 +13,7 @@ declare module "@wailsio/runtime" {
     namespace Events {
         interface CustomEvents {
             "heartbeat": main$0.Heartbeat;
+            "keyPress": number[];
         }
     }
 }

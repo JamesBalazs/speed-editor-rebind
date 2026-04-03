@@ -47,3 +47,81 @@ export class Heartbeat {
         return new Heartbeat(/** @type {Partial<Heartbeat>} */($$parsedSource));
     }
 }
+
+/**
+ * Key represents a key on the Speed Editor with its position and dimensions
+ */
+export class Key {
+    /**
+     * Creates a new Key instance.
+     * @param {Partial<Key>} [$$source = {}] - The source object to create the Key.
+     */
+    constructor($$source = {}) {
+        if (!("name" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["name"] = "";
+        }
+        if (!("id" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["id"] = 0;
+        }
+        if (!("text" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["text"] = "";
+        }
+        if (!("subText" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["subText"] = "";
+        }
+        if (!("row" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["row"] = 0;
+        }
+        if (!("col" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["col"] = 0;
+        }
+        if (!("width" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["width"] = 0;
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new Key instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {Key}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new Key(/** @type {Partial<Key>} */($$parsedSource));
+    }
+}
+
+/**
+ * KeyGrid represents the keyboard layout as map[column][row]Key
+ * @typedef {{ [_ in string]?: { [_ in `${number}`]?: Key } }} KeyGrid
+ */
