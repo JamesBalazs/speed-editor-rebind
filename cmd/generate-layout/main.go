@@ -53,7 +53,7 @@ func main() {
 			text := strings.ReplaceAll(key.Text, "\n", `\n`)
 			subText := strings.ReplaceAll(key.SubText, "\n", `\n`)
 
-			fmt.Printf(`  <Key id="%d" col="%d" colSpan="%d" row="%d" text="%s" subText="%s" led="%d" jogLed="%d" />`+"\n", key.Id, gridColumnStart, gridColumnSpan, gridRow, text, subText, key.Led, key.JogLed)
+			fmt.Printf(`  <Key :id="%d" :col="%d" :colSpan="%d" :row="%d" text="%s" subText="%s" :led="%d" :jogLed="%d" />`+"\n", key.Id, gridColumnStart, gridColumnSpan, gridRow, text, subText, key.Led, key.JogLed)
 		}
 	}
 
