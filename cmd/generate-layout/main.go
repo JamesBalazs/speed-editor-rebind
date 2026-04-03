@@ -63,6 +63,11 @@ func main() {
 
 			fmt.Printf(`  <div class="key" id="key-%d" data-id="%d" style="grid-column: %d / span %d; grid-row: %d / span 2;">`+"\n",
 				key.Id, key.Id, gridColumnStart, gridColumnSpan, gridRow)
+
+			if key.Led != 0 || key.JogLed != 0 {
+				fmt.Printf(`    <div class="led-container"><span class="led"></span></div>`)
+			}
+
 			fmt.Printf(`    <span class="key-text">%s</span>`+"\n", text)
 			if key.SubText != "" {
 				fmt.Printf(`    <span class="key-subtext">%s</span>`+"\n", subText)

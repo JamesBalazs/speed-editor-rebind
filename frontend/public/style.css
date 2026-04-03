@@ -251,10 +251,17 @@ h1 {
     left: 4px;
 }
 
-.key-pad-left {
-    padding-left: 20px;
+.led {
+    display: inline-block;
+    border: 1px solid #333;
+    padding: 2px 7px;
+    background-color: #001;
 }
 
-.key-pad-top {
-    padding-top: 20px;
+.led-container {
+    margin-top: -8px;
+}
+
+.led-lit {
+    background-color: rgba(255, 38, 54, 1);
 }
