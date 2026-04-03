@@ -76,6 +76,8 @@ func main() {
 		}
 	}
 
+	fmt.Println(`<div class="jog-dial" style="grid-column: 17 / span 6; grid-row: 7 / span 6"></div>`)
+
 	fmt.Println(`</div>`)
 }
 
