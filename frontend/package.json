@@ -1,18 +1,24 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build:dev": "vite build --minify false --mode development",
-    "build": "vite build --mode production",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@wailsio/runtime": "latest"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0"
-  }
+    "name": "frontend",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build:dev": "vite build --minify false --mode development",
+        "build": "vite build --mode production",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@quasar/extras": "^1.17.0",
+        "@wailsio/runtime": "latest",
+        "vue": "^3.2.45",
+        "quasar": "^2.19.2"
+    },
+    "devDependencies": {
+        "@quasar/vite-plugin": "^1.11.0",
+        "@vitejs/plugin-vue": "^6.0.0",
+        "sass": "^1.99.0",
+        "vite": "^5.0.0"
+    }
 }

@@ -50,57 +50,16 @@ func main() {
 				gridRow += 1
 			}
 
-			// Process text - replace actual newlines with <br> for HTML
-			text := key.Text
-			if text == "" {
-				text = key.Name
-			}
-			text = escapeHTML(text)
-			text = strings.ReplaceAll(text, "\n", "<br>")
+			text := strings.ReplaceAll(key.Text, "\n", `\n`)
+			subText := strings.ReplaceAll(key.SubText, "\n", `\n`)
 
-			subText := escapeHTML(key.SubText)
-			subText = strings.ReplaceAll(subText, "\n", "<br>")
-
-			fmt.Printf(`  <div class="key" id="key-%d" data-id="%d" style="grid-column: %d / span %d; grid-row: %d / span 2;">`+"\n",
-				key.Id, key.Id, gridColumnStart, gridColumnSpan, gridRow)
-
-			if key.Led != 0 || key.JogLed != 0 {
-				fmt.Printf(`    <div class="led-container"><span class="led"></span></div>`)
-			}
-
-			fmt.Printf(`    <span class="key-text">%s</span>`+"\n", text)
-			if key.SubText != "" {
-				fmt.Printf(`    <span class="key-subtext">%s</span>`+"\n", subText)
-			}
-			fmt.Println(`  </div>`)
+			fmt.Printf(`  <Key id="%d" col="%d" colSpan="%d" row="%d" text="%s" subText="%s" led="%d" jogLed="%d" />`+"\n", key.Id, gridColumnStart, gridColumnSpan, gridRow, text, subText, key.Led, key.JogLed)
 		}
 	}
 
-	fmt.Println(`<div class="jog-dial" style="grid-column: 17 / span 6; grid-row: 7 / span 6"></div>`)
+	fmt.Println(`  <div class="jog-dial" style="grid-column: 17 / span 6; grid-row: 7 / span 6"></div>`)
 
 	fmt.Println(`</div>`)
-}
-
-func escapeHTML(s string) string {
-	s = replaceAll(s, "&", "&amp;")
-	s = replaceAll(s, "<", "&lt;")
-	s = replaceAll(s, ">", "&gt;")
-	s = replaceAll(s, "\"", "&quot;")
-	s = replaceAll(s, "'", "&#39;")
-	return s
-}
-
-func replaceAll(s, old, new string) string {
-	result := ""
-	for i := 0; i < len(s); i++ {
-		if i+len(old) <= len(s) && s[i:i+len(old)] == old {
-			result += new
-			i += len(old) - 1
-		} else {
-			result += string(s[i])
-		}
-	}
-	return result
 }
 
 func max(a, b int) int {

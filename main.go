@@ -64,7 +64,7 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "Window 1",
+		Title: "Speed Editor Rebind",
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
@@ -72,6 +72,8 @@ func main() {
 		},
 		BackgroundColour: application.NewRGB(27, 38, 54),
 		URL:              "/",
+		MinWidth:         800,
+		MinHeight:        900,
 	})
 
 	if err := hid.Init(); err != nil {
@@ -99,8 +101,10 @@ func main() {
 
 			deviceInfo := client.GetDeviceInfo()
 
-			app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
-			break
+			for {
+				app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
+				time.Sleep(2 * time.Second)
+			}
 		}
 	}()
 
