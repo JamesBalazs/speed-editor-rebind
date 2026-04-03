@@ -1,6 +1,7 @@
 # speed-editor-rebind
 Cross platform GUI for rebinding DaVinci Resolve Speed Editor keys
 
+![Screenshot](img/ui-example.png)
 
 ## Dev notes
 
