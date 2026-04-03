@@ -12,8 +12,8 @@
     "dependencies": {
         "@quasar/extras": "^1.17.0",
         "@wailsio/runtime": "latest",
-        "vue": "^3.2.45",
-        "quasar": "^2.19.2"
+        "quasar": "^2.19.2",
+        "vue": "^3.2.45"
     },
     "devDependencies": {
         "@quasar/vite-plugin": "^1.11.0",
