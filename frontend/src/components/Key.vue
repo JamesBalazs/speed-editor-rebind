@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { Events } from "@wailsio/runtime";
+import { store } from "../store.js";
 // import { GreetService } from "../../bindings/changeme";
 
 const props = defineProps({
@@ -45,14 +46,19 @@ const formattedText = computed(() => {
 const formattedSubText = computed(() => {
     return props.subText.replace(/\\n/g, "<br>");
 });
+
+const isSelected = computed(() => {
+    return store.selectedKey == props.id;
+});
 </script>
 
 <template>
     <div
-        :class="{ key: true, active: isActive }"
+        :class="{ key: true, active: isActive, selected: isSelected }"
         :id="`key-${id}`"
         :data-id="id"
         :style="`grid-column: ${col} / span ${colSpan}; grid-row: ${row} / span 2`"
+        @click="store.selectKey(id)"
     >
         <div class="led-container" v-if="led != 0 || jogLed != 0">
             <span class="led"></span>
@@ -66,3 +72,9 @@ const formattedSubText = computed(() => {
         ></span>
     </div>
 </template>
+
+<style scoped>
+.selected {
+    box-shadow: 0 0 0 3px #fbbf24;
+}
+</style>
