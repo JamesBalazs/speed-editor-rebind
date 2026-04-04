@@ -64,11 +64,6 @@ button {
     cursor: pointer;
 }
 
-.result {
-    height: 20px;
-    line-height: 20px;
-}
-
 body {
     margin: 0;
     display: flex;
@@ -94,20 +89,6 @@ h1 {
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
-}
-
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-}
-
-.logo:hover {
-    filter: drop-shadow(0 0 2em #e80000aa);
-}
-
-.logo.vanilla:hover {
-    filter: drop-shadow(0 0 2em #f7df1eaa);
 }
 
 .result {
