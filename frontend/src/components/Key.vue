@@ -39,6 +39,14 @@ function pressed(data) {
     }, 250);
 }
 
+function clicked() {
+    if (store.selectedKey === props.id) {
+        store.selectKey(null);
+    } else {
+        store.selectKey(props.id);
+    }
+}
+
 const formattedText = computed(() => {
     return props.text.replace(/\\n/g, "<br>");
 });
@@ -58,7 +66,7 @@ const isSelected = computed(() => {
         :id="`key-${id}`"
         :data-id="id"
         :style="`grid-column: ${col} / span ${colSpan}; grid-row: ${row} / span 2`"
-        @click="store.selectKey(id)"
+        @click="clicked()"
     >
         <div class="led-container" v-if="led != 0 || jogLed != 0">
             <span class="led"></span>

@@ -1,4 +1,5 @@
 <script setup>
+import ActionsToolbox from "./components/ActionsToolbox.vue";
 import DeviceConnection from "./components/DeviceConnection.vue";
 import Key from "./components/Key.vue";
 </script>
@@ -449,29 +450,7 @@ import Key from "./components/Key.vue";
         </div>
     </div>
 
-    <q-card dark bordered flat class="toolbox">
-        <q-toolbar class="glossy row">
-            <q-toolbar-title>Choose Action</q-toolbar-title>
-        </q-toolbar>
-
-        <q-tabs align="left">
-            <q-tab name="button" label="Button"></q-tab>
-            <q-tab name="led" label="LED Behaviour"></q-tab>
-        </q-tabs>
-
-        <q-separator dark></q-separator>
-    </q-card>
+    <ActionsToolbox></ActionsToolbox>
 </template>
 
-<style scoped>
-.toolbox {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100vw;
-    height: 300px;
-    border-radius: 0;
-    z-index: 1000;
-}
-</style>
+<style scoped></style>
