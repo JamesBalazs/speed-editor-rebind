@@ -1,11 +1,28 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { store } from "../store.js";
 // import { GreetService } from "../../bindings/changeme";
+
+import ActionLedBehaviour from "./ActionLedBehaviour.vue";
 
 const selectedKey = computed(() => {
     return store.selectedKey;
 });
+
+const hasLed = computed(() => {
+    return (
+        (store.selectedLed !== null && store.selectedLed !== 0) ||
+        (store.selectedJogLed !== null && store.selectedJogLed !== 0)
+    );
+});
+
+watch(hasLed, (newValue, oldValue) => {
+    if (newValue === false) {
+        tab.value = "button";
+    }
+});
+
+const tab = ref("button");
 </script>
 
 <template>
@@ -17,12 +34,23 @@ const selectedKey = computed(() => {
             <q-toolbar-title v-else>Choose Action</q-toolbar-title>
         </q-toolbar>
 
-        <q-tabs align="left" :class="{ disabled: selectedKey === null }">
+        <q-tabs
+            v-model="tab"
+            align="left"
+            :class="{ disabled: selectedKey === null }"
+        >
             <q-tab name="button" label="Button"></q-tab>
-            <q-tab name="led" label="LED Behaviour"></q-tab>
+            <q-tab name="led" label="LED Behaviour" v-if="hasLed"></q-tab>
         </q-tabs>
 
         <q-separator dark></q-separator>
+
+        <q-tab-panels dark v-model="tab" animated>
+            <q-tab-panel name="button"> btn </q-tab-panel>
+            <q-tab-panel name="led" v-if="hasLed">
+                <ActionLedBehaviour></ActionLedBehaviour>
+            </q-tab-panel>
+        </q-tab-panels>
     </q-card>
 </template>
 

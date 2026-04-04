@@ -41,9 +41,9 @@ function pressed(data) {
 
 function clicked() {
     if (store.selectedKey === props.id) {
-        store.selectKey(null);
+        store.selectKey(null, null, null);
     } else {
-        store.selectKey(props.id);
+        store.selectKey(props.id, props.led, props.jogLed);
     }
 }
 
