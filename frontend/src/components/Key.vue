@@ -14,6 +14,9 @@ const props = defineProps({
     jogLed: Number,
 });
 
+const isActive = ref(false);
+let activeTimeout = null;
+
 onMounted(() => {
     Events.On(`keyPress-${props.id}`, (event) => {
         // Highlight the pressed keys
@@ -25,7 +28,14 @@ onMounted(() => {
 });
 
 function pressed(data) {
-    console.log("pressed called with: ", data);
+    // Clear any pending timeout if key is pressed again
+    if (activeTimeout) {
+        clearTimeout(activeTimeout);
+    }
+    isActive.value = true;
+    activeTimeout = setTimeout(() => {
+        isActive.value = false;
+    }, 250);
 }
 
 const formattedText = computed(() => {
@@ -39,7 +49,7 @@ const formattedSubText = computed(() => {
 
 <template>
     <div
-        class="key"
+        :class="{ key: true, active: isActive }"
         :id="`key-${id}`"
         :data-id="id"
         :style="`grid-column: ${col} / span ${colSpan}; grid-row: ${row} / span 2`"

@@ -3,11 +3,13 @@ package main
 import (
 	"embed"
 	_ "embed"
+	"fmt"
 	"log"
 	"strings"
 	"time"
 
 	speedEditor "github.com/JamesBalazs/speed-editor-client"
+	"github.com/JamesBalazs/speed-editor-client/input"
 	"github.com/sstallion/go-hid"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
@@ -100,11 +102,21 @@ func main() {
 			}
 
 			deviceInfo := client.GetDeviceInfo()
+			go func() {
+				// TODO - this is a hack to get the connected string to work when the device connects before Vue is ready
+				// Need to rework this to keep some BE state about the connection
+				for {
+					app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
+					time.Sleep(2 * time.Second)
+				}
+			}()
 
-			for {
-				app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
-				time.Sleep(2 * time.Second)
-			}
+			client.SetKeyPressHandler(func(se speedEditor.SpeedEditorInt, report input.KeyPressReport) {
+				for _, key := range report.Keys {
+					app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id), map[string]string{"some": "data"})
+				}
+			})
+			client.Poll()
 		}
 	}()
 

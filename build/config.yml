@@ -48,7 +48,9 @@ dev_mode:
         watched_extension:
             - "*.go"
             - "*.js" # Watch for changes to JS/TS files included using the //wails:include directive.
-            - "*.ts" # The frontend directory will be excluded entirely by the setting above.
+            - "*.ts" # The frontend directory will be excluded entirely by the setting above.-
+            - "*.vue"
+            - "*.css"
         git_ignore: true
     executes:
         - cmd: wails3 build DEV=true
