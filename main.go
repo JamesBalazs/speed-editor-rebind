@@ -46,11 +46,13 @@ func main() {
 	// 'Assets' configures the asset server with the 'FS' variable pointing to the frontend files.
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
+
+	speedEditorService := &SpeedEditorService{}
 	app := application.New(application.Options{
 		Name:        "speed-editor-rebind",
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
-			application.NewService(&SpeedEditorService{}),
+			application.NewService(speedEditorService),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -114,6 +116,16 @@ func main() {
 			client.SetKeyPressHandler(func(se speedEditor.SpeedEditorInt, report input.KeyPressReport) {
 				for _, key := range report.Keys {
 					app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id), map[string]string{"some": "data"})
+
+					if mode, ok := speedEditorService.keyLedBehaviours[key.Id]; ok {
+						if mode == "flash" {
+							client.SetLeds([]uint32{key.Led})
+							go func() {
+								time.Sleep(250 * time.Millisecond)
+								client.SetLeds([]uint32{})
+							}()
+						}
+					}
 				}
 			})
 			client.Poll()

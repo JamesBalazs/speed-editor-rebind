@@ -8,20 +8,7 @@ import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Cr
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as application$0 from "../../wailsapp/wails/v3/pkg/application/models.js";
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore: Unused imports
 import * as $models from "./models.js";
-
-/**
- * EmitKeyPress emits a key press event to the frontend (for testing/manual triggering)
- * @param {number[]} keyIds
- * @returns {$CancellablePromise<void>}
- */
-export function EmitKeyPress(keyIds) {
-    return $Call.ByID(880009122, keyIds);
-}
 
 /**
  * GetKeys returns all keys from the Speed Editor layout organized by column and row
@@ -34,11 +21,12 @@ export function GetKeys() {
 }
 
 /**
- * @param {application$0.App | null} app
+ * @param {number} keyId
+ * @param {string} mode
  * @returns {$CancellablePromise<void>}
  */
-export function Start(app) {
-    return $Call.ByID(706794645, app);
+export function SetKeyLedBehaviour(keyId, mode) {
+    return $Call.ByID(1929953512, keyId, mode);
 }
 
 // Private type creation functions

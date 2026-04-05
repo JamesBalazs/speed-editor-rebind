@@ -10,10 +10,7 @@ const selectedKey = computed(() => {
 });
 
 const hasLed = computed(() => {
-    return (
-        (store.selectedLed !== null && store.selectedLed !== 0) ||
-        (store.selectedJogLed !== null && store.selectedJogLed !== 0)
-    );
+    return store.selectedHasAnyLed();
 });
 
 watch(hasLed, (newValue, oldValue) => {

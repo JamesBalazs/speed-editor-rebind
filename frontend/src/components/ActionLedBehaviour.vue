@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { store } from "../store.js";
-// import { GreetService } from "../../bindings/changeme";
+import { SpeedEditorService } from "../../bindings/github.com/JamesBalazs/speed-editor-rebind";
 
 const splitter = ref(20);
 const tab = ref("none");
@@ -16,6 +16,14 @@ const selectedLed = computed(() => {
 
 const selectedJogLed = computed(() => {
     return store.selectedJogLed;
+});
+
+watch(tab, (newValue, oldValue) => {
+    if (!store.selectedHasAnyLed()) {
+        return;
+    }
+
+    SpeedEditorService.SetKeyLedBehaviour(store.selectedKey, newValue);
 });
 </script>
 

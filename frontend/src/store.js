@@ -9,4 +9,10 @@ export const store = reactive({
         this.selectedLed = ledId;
         this.selectedJogLed = jogLedId;
     },
+    selectedHasAnyLed() {
+        return (
+            (this.selectedLed !== null && this.selectedLed !== 0) ||
+            (this.selectedJogLed !== null && this.selectedJogLed !== 0)
+        );
+    },
 });
