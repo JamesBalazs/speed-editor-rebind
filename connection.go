@@ -47,14 +47,17 @@ func connectSpeedEditor() {
 
 func handleKeyPress(se speedEditor.SpeedEditorInt, report input.KeyPressReport) {
 	for _, key := range report.Keys {
-		app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id), map[string]string{"some": "data"})
+		app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id))
 
 		if mode, ok := speedEditorService.keyLedBehaviours[key.Id]; ok {
 			if mode == "flash" {
 				client.SetLeds([]uint32{key.Led})
+				client.SetJogLeds([]uint8{key.JogLed})
+
 				go func() {
 					time.Sleep(250 * time.Millisecond)
 					client.SetLeds([]uint32{})
+					client.SetJogLeds([]uint8{})
 				}()
 			}
 		}
