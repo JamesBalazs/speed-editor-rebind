@@ -27,7 +27,10 @@ go install github.com/wailsapp/wails/v3/cmd/wails3@latest
 #### SA_ONSTACK errors
 
 While developing I have run into SA_ONSTACK errors a couple of times. Looks like these are usually nil pointer dereferences, but something weird is happening with Wails:
-     1. Nil dereference → SIGSEGV (signal 11)
-     2. Go's tries to handle the signal on a signal stack
-     3. WebKit/GTK (from Wails) has already installed its own signal handler for signal 11 without the `SA_ONSTACK` flag
-     4. Go crashes with: non-Go code set up signal handler without SA_ONSTACK flag
+
+1. Nil dereference → SIGSEGV (signal 11)
+1. Go's tries to handle the signal on a signal stack
+1. WebKit/GTK (from Wails) has already installed its own signal handler for signal 11 without the `SA_ONSTACK` flag
+1. Go crashes with: non-Go code set up signal handler without SA_ONSTACK flag
+
+Noting here in case of future confusion, this stumped me for a while and unfortunately AI (***audible groan***) explained the problem really well
