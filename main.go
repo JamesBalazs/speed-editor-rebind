@@ -3,13 +3,8 @@ package main
 import (
 	"embed"
 	_ "embed"
-	"fmt"
 	"log"
-	"strings"
-	"time"
 
-	speedEditor "github.com/JamesBalazs/speed-editor-client"
-	"github.com/JamesBalazs/speed-editor-client/input"
 	"github.com/sstallion/go-hid"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
@@ -30,13 +25,16 @@ func init() {
 	application.RegisterEvent[[]uint16]("keyPress")
 }
 
-var connected bool
-
 type Heartbeat struct {
 	Connected bool
 	Error     string
 	Serial    string
 }
+
+var (
+	speedEditorService = &SpeedEditorService{}
+	app                *application.App
+)
 
 // main function serves as the application's entry point. It initializes the application and creates a window.
 // It subsequently runs the application and logs any error that might occur.
@@ -47,8 +45,7 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 
-	speedEditorService := &SpeedEditorService{}
-	app := application.New(application.Options{
+	app = application.New(application.Options{
 		Name:        "speed-editor-rebind",
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
@@ -85,52 +82,7 @@ func main() {
 	}
 	defer hid.Exit()
 
-	go func() {
-		for {
-			client, err := speedEditor.NewClient()
-			if err != nil && strings.Contains(err.Error(), "No HID devices with requested VID/PID found in the system.") {
-				continue
-			} else if err != nil {
-				app.Event.Emit("heartbeat", Heartbeat{Connected: false, Error: err.Error()})
-				time.Sleep(2 * time.Second)
-				continue
-			}
-
-			err = client.Authenticate()
-			if err != nil {
-				app.Event.Emit("heartbeat", Heartbeat{Connected: false, Error: err.Error()})
-				time.Sleep(2 * time.Second)
-				continue
-			}
-
-			deviceInfo := client.GetDeviceInfo()
-			go func() {
-				// TODO - this is a hack to get the connected string to work when the device connects before Vue is ready
-				// Need to rework this to keep some BE state about the connection
-				for {
-					app.Event.Emit("heartbeat", Heartbeat{Connected: true, Serial: deviceInfo.SerialNbr})
-					time.Sleep(2 * time.Second)
-				}
-			}()
-
-			client.SetKeyPressHandler(func(se speedEditor.SpeedEditorInt, report input.KeyPressReport) {
-				for _, key := range report.Keys {
-					app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id), map[string]string{"some": "data"})
-
-					if mode, ok := speedEditorService.keyLedBehaviours[key.Id]; ok {
-						if mode == "flash" {
-							client.SetLeds([]uint32{key.Led})
-							go func() {
-								time.Sleep(250 * time.Millisecond)
-								client.SetLeds([]uint32{})
-							}()
-						}
-					}
-				}
-			})
-			client.Poll()
-		}
-	}()
+	go connectSpeedEditor()
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()
