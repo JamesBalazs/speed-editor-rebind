@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(go *)",
-      "Bash(find *)"
-    ]
-  },
-  "$version": 3
-}
