@@ -2,12 +2,19 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/JamesBalazs/speed-editor-client/keys"
 )
 
+type ledStatus struct {
+	mode   string
+	litAt  time.Time
+	litFor time.Duration
+}
+
 type SpeedEditorService struct {
-	keyLedBehaviours map[uint16]string
+	LedStatus map[uint16]*ledStatus
 }
 
 // Key represents a key on the Speed Editor with its position and dimensions
@@ -46,11 +53,30 @@ func (s *SpeedEditorService) GetKeys() KeyGrid {
 }
 
 func (s *SpeedEditorService) SetKeyLedBehaviour(keyId uint16, mode string) {
-	if s.keyLedBehaviours == nil {
-		s.keyLedBehaviours = map[uint16]string{}
+	if s.LedStatus == nil {
+		s.LedStatus = map[uint16]*ledStatus{}
 	}
 
-	s.keyLedBehaviours[keyId] = mode
+	if _, exists := s.LedStatus[keyId]; !exists {
+		s.LedStatus[keyId] = &ledStatus{mode: mode}
+	} else {
+		s.LedStatus[keyId].mode = mode
+	}
 
-	fmt.Printf("%v\n", s.keyLedBehaviours)
+	fmt.Printf("%v\n", s.LedStatus)
+}
+
+func (s *SpeedEditorService) SetKeyLit(keyId uint16, litAt time.Time, litFor time.Duration) {
+	if s.LedStatus == nil {
+		s.LedStatus = map[uint16]*ledStatus{}
+	}
+
+	if _, exists := s.LedStatus[keyId]; !exists {
+		s.LedStatus[keyId] = &ledStatus{litAt: litAt, litFor: litFor}
+	} else {
+		s.LedStatus[keyId].litAt = litAt
+		s.LedStatus[keyId].litFor = litFor
+	}
+
+	fmt.Printf("%v\n", s.LedStatus)
 }

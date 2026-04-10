@@ -7,9 +7,13 @@ import (
 
 	speedEditor "github.com/JamesBalazs/speed-editor-client"
 	"github.com/JamesBalazs/speed-editor-client/input"
+	"github.com/JamesBalazs/speed-editor-client/keys"
 )
 
-var client speedEditor.SpeedEditorInt
+var (
+	client   speedEditor.SpeedEditorInt
+	keysById = keys.ById()
+)
 
 func connectSpeedEditor() {
 	for {
@@ -49,17 +53,42 @@ func handleKeyPress(se speedEditor.SpeedEditorInt, report input.KeyPressReport) 
 	for _, key := range report.Keys {
 		app.Event.Emit(fmt.Sprintf("keyPress-%d", key.Id))
 
-		if mode, ok := speedEditorService.keyLedBehaviours[key.Id]; ok {
-			if mode == "flash" {
-				client.SetLeds([]uint32{key.Led})
-				client.SetJogLeds([]uint8{key.JogLed})
+		if status, ok := speedEditorService.LedStatus[key.Id]; ok {
+			if status.mode == "flash" {
+				speedEditorService.SetKeyLit(key.Id, time.Now(), 250*time.Millisecond)
+				consolidateLeds()
 
 				go func() {
 					time.Sleep(250 * time.Millisecond)
-					client.SetLeds([]uint32{})
-					client.SetJogLeds([]uint8{})
+
+					consolidateLeds()
 				}()
 			}
 		}
 	}
+}
+
+func consolidateLeds() {
+	leds := []uint32{}
+	jogLeds := []uint8{}
+	for keyId, status := range speedEditorService.LedStatus {
+		if key, ok := keysById[keyId]; ok && key.Led != keys.LED_NONE {
+			if time.Now().Before(status.litAt.Add(status.litFor)) {
+				leds = append(leds, key.Led)
+			} else {
+				status.litAt = time.Time{}
+				status.litFor = 0
+			}
+		} else if ok && key.JogLed != keys.LED_NONE {
+			if time.Now().Before(status.litAt.Add(status.litFor)) {
+				jogLeds = append(jogLeds, key.JogLed)
+			} else {
+				status.litAt = time.Time{}
+				status.litFor = 0
+			}
+		}
+	}
+
+	client.SetLeds(leds)
+	client.SetJogLeds(jogLeds)
 }

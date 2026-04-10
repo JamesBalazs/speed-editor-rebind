@@ -8,6 +8,10 @@ import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Cr
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
+import * as time$0 from "../../../time/models.js";
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
 import * as $models from "./models.js";
 
 /**
@@ -27,6 +31,16 @@ export function GetKeys() {
  */
 export function SetKeyLedBehaviour(keyId, mode) {
     return $Call.ByID(1929953512, keyId, mode);
+}
+
+/**
+ * @param {number} keyId
+ * @param {time$0.Time} litAt
+ * @param {time$0.Duration} litFor
+ * @returns {$CancellablePromise<void>}
+ */
+export function SetKeyLit(keyId, litAt, litFor) {
+    return $Call.ByID(921159981, keyId, litAt, litFor);
 }
 
 // Private type creation functions
