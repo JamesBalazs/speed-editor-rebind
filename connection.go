@@ -55,14 +55,21 @@ func handleKeyPress(se speedEditor.SpeedEditorInt, report input.KeyPressReport) 
 
 		if status, ok := speedEditorService.LedStatus[key.Id]; ok {
 			if status.mode == "flash" {
-				speedEditorService.SetKeyLit(key.Id, time.Now(), 250*time.Millisecond)
+				litFor := 250 * time.Millisecond
+				speedEditorService.SetKeyLit(key.Id, time.Now(), litFor)
 				consolidateLeds()
 
 				go func() {
-					time.Sleep(250 * time.Millisecond)
+					time.Sleep(litFor)
 
 					consolidateLeds()
 				}()
+			} else if status.mode == "latch" && status.litAt.IsZero() {
+				speedEditorService.SetKeyLit(key.Id, time.Now(), 0)
+				consolidateLeds()
+			} else if status.mode == "latch" {
+				speedEditorService.SetKeyLit(key.Id, time.Time{}, 0)
+				consolidateLeds()
 			}
 		}
 	}
@@ -73,7 +80,7 @@ func consolidateLeds() {
 	jogLeds := []uint8{}
 	for keyId, status := range speedEditorService.LedStatus {
 		if key, ok := keysById[keyId]; ok && key.Led != keys.LED_NONE {
-			if time.Now().Before(status.litAt.Add(status.litFor)) {
+			if (!status.litAt.IsZero() && status.litFor == 0) || time.Now().Before(status.litAt.Add(status.litFor)) {
 				leds = append(leds, key.Led)
 			} else {
 				status.litAt = time.Time{}
