@@ -125,3 +125,24 @@ export class Key {
  * KeyGrid represents the keyboard layout as map[column][row]Key
  * @typedef {{ [_ in string]?: { [_ in `${number}`]?: Key } }} KeyGrid
  */
+
+export class ledStatus {
+    /**
+     * Creates a new ledStatus instance.
+     * @param {Partial<ledStatus>} [$$source = {}] - The source object to create the ledStatus.
+     */
+    constructor($$source = {}) {
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new ledStatus instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {ledStatus}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new ledStatus(/** @type {Partial<ledStatus>} */($$parsedSource));
+    }
+}

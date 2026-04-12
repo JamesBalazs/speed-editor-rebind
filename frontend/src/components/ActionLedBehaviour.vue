@@ -23,7 +23,7 @@ watch(tab, (newValue, oldValue) => {
         return;
     }
 
-    SpeedEditorService.SetKeyLedBehaviour(store.selectedKey, newValue);
+    SpeedEditorService.SetKeyLedMode(store.selectedKey, newValue);
 });
 </script>
 
