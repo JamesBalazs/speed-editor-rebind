@@ -62,4 +62,5 @@ func (s *SpeedEditorService) SetKeyLedMode(keyId uint16, mode string) {
 		status.mode = mode
 		s.LedStatus.Store(keyId, status)
 	}
+	ConfigUpdateLedMode(keyId, mode)
 }

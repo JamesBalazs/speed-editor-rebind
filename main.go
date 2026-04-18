@@ -45,6 +45,13 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 
+	createOrOpenConfigFile()
+	defer configFile.Close()
+	readOrInitConfigFile()
+	for key, config := range config {
+		speedEditorService.SetKeyLedMode(key, config.LedMode)
+	}
+
 	app = application.New(application.Options{
 		Name:        "speed-editor-rebind",
 		Description: "A demo of using raw HTML & CSS",
