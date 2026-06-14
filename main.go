@@ -25,6 +25,7 @@ func init() {
 	application.RegisterEvent[[]uint16]("keyPress")
 	application.RegisterEvent[[]uint32]("consolidateLeds")
 	application.RegisterEvent[[]uint32]("consolidateJogLeds") // underlying data is uint8 but Wails would cast that to a byte
+	application.RegisterEvent[int]("jogWheelMoved")
 }
 
 type Heartbeat struct {

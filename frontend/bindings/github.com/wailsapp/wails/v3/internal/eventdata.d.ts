@@ -15,6 +15,7 @@ declare module "@wailsio/runtime" {
             "consolidateJogLeds": number[];
             "consolidateLeds": number[];
             "heartbeat": main$0.Heartbeat;
+            "jogWheelMoved": number;
             "keyPress": number[];
         }
     }

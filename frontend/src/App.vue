@@ -2,6 +2,7 @@
 import ActionsToolbox from "./components/ActionsToolbox.vue";
 import DeviceConnection from "./components/DeviceConnection.vue";
 import Key from "./components/Key.vue";
+import JogWheel from "./components/JogWheel.vue";
 </script>
 
 <template>
@@ -442,10 +443,8 @@ import Key from "./components/Key.vue";
                     :led="0"
                     :jogLed="4"
                 />
-                <div
-                    class="jog-dial"
-                    style="grid-column: 17 / span 6; grid-row: 7 / span 6"
-                ></div>
+
+                <JogWheel></JogWheel>
             </div>
         </div>
     </div>

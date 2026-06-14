@@ -45,6 +45,7 @@ func connectSpeedEditor() {
 		}()
 
 		client.SetKeyPressHandler(handleKeyPress)
+		client.SetJogHandler(handleJogWheel)
 		client.Poll()
 	}
 }
@@ -80,6 +81,11 @@ func handleKeyPress(se speedEditor.SpeedEditorInt, report input.KeyPressReport) 
 			}
 		}
 	}
+}
+
+func handleJogWheel(client speedEditor.SpeedEditorInt, report input.JogReport) {
+	fmt.Printf("Jog wheel position: %d\n", report.Value)
+	app.Event.Emit("jogWheelMoved", int(report.Value))
 }
 
 func consolidateLeds() {
