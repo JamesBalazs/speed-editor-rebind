@@ -109,13 +109,20 @@ func consolidateLeds() {
 		return true
 	})
 
+	setLeds(leds)
+	setJogLeds(jogLeds)
+}
+
+func setLeds(leds []uint32) {
 	app.Event.Emit("consolidateLeds", leds)
 	client.SetLeds(leds)
+}
 
-	jogLedsForEvent := make([]uint32, len(jogLeds))
-	for i, v := range jogLeds {
-		jogLedsForEvent[i] = uint32(v)
+func setJogLeds(leds []uint8) {
+	ledsForEvent := make([]uint32, len(leds))
+	for i, v := range leds {
+		ledsForEvent[i] = uint32(v)
 	}
-	app.Event.Emit("consolidateJogLeds", jogLedsForEvent)
-	client.SetJogLeds(jogLeds)
+	app.Event.Emit("consolidateJogLeds", ledsForEvent)
+	client.SetJogLeds(leds)
 }
