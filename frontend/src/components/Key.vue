@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { Events } from "@wailsio/runtime";
 import { store } from "../store.js";
-// import { GreetService } from "../../bindings/changeme";
+import Led from "./Led.vue";
 
 const props = defineProps({
     id: Number,
@@ -18,27 +18,11 @@ const props = defineProps({
 const isActive = ref(false);
 let activeTimeout = null;
 
-const isLit = ref(false);
-
 onMounted(() => {
     Events.On(`keyPress-${props.id}`, (event) => {
         // Highlight the pressed keys
         pressed(event.data);
     });
-
-    if (props.led > 0) {
-        Events.On(`consolidateLeds`, (event) => {
-            // Highlight the pressed keys
-            consolidateLeds(event.data, props.led);
-        });
-    }
-
-    if (props.jogLed > 0) {
-        Events.On(`consolidateJogLeds`, (event) => {
-            // Highlight the pressed keys
-            consolidateLeds(event.data, props.jogLed);
-        });
-    }
 });
 
 function pressed(data) {
@@ -50,14 +34,6 @@ function pressed(data) {
     activeTimeout = setTimeout(() => {
         isActive.value = false;
     }, 250);
-}
-
-function consolidateLeds(data, ledId) {
-    if (data.includes(ledId)) {
-        isLit.value = true;
-    } else {
-        isLit.value = false;
-    }
 }
 
 function clicked() {
@@ -89,9 +65,7 @@ const isSelected = computed(() => {
         :style="`grid-column: ${col} / span ${colSpan}; grid-row: ${row} / span 2`"
         @click="clicked()"
     >
-        <div class="led-container" v-if="led != 0 || jogLed != 0">
-            <span class="led" :class="{ ledLit: isLit }"></span>
-        </div>
+        <Led :led="led" :jogLed="jogLed" v-if="led != 0 || jogLed != 0" />
 
         <span class="key-text" v-if="text !== ''" v-html="formattedText"></span>
         <span
@@ -166,21 +140,6 @@ const isSelected = computed(() => {
     position: absolute;
     bottom: 3px;
     left: 4px;
-}
-
-.led {
-    display: inline-block;
-    border: 1px solid #333;
-    padding: 2px 7px;
-    background-color: #001;
-}
-
-.led-container {
-    margin-top: -8px;
-}
-
-.ledLit {
-    background-color: rgba(255, 38, 54, 1);
 }
 
 .key.selected {
