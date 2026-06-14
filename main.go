@@ -23,6 +23,8 @@ func init() {
 	// and provide a strongly typed JS/TS API for them.
 	application.RegisterEvent[Heartbeat]("heartbeat")
 	application.RegisterEvent[[]uint16]("keyPress")
+	application.RegisterEvent[[]uint32]("consolidateLeds")
+	application.RegisterEvent[[]uint32]("consolidateJogLeds") // underlying data is uint8 but Wails would cast that to a byte
 }
 
 type Heartbeat struct {

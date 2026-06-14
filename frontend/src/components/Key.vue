@@ -18,14 +18,27 @@ const props = defineProps({
 const isActive = ref(false);
 let activeTimeout = null;
 
+const isLit = ref(false);
+
 onMounted(() => {
     Events.On(`keyPress-${props.id}`, (event) => {
         // Highlight the pressed keys
         pressed(event.data);
-
-        // Log for debugging
-        console.log(`Key pressed: ${props.id}, `, event.data);
     });
+
+    if (props.led > 0) {
+        Events.On(`consolidateLeds`, (event) => {
+            // Highlight the pressed keys
+            consolidateLeds(event.data, props.led);
+        });
+    }
+
+    if (props.jogLed > 0) {
+        Events.On(`consolidateJogLeds`, (event) => {
+            // Highlight the pressed keys
+            consolidateLeds(event.data, props.jogLed);
+        });
+    }
 });
 
 function pressed(data) {
@@ -37,6 +50,14 @@ function pressed(data) {
     activeTimeout = setTimeout(() => {
         isActive.value = false;
     }, 250);
+}
+
+function consolidateLeds(data, ledId) {
+    if (data.includes(ledId)) {
+        isLit.value = true;
+    } else {
+        isLit.value = false;
+    }
 }
 
 function clicked() {
@@ -69,7 +90,7 @@ const isSelected = computed(() => {
         @click="clicked()"
     >
         <div class="led-container" v-if="led != 0 || jogLed != 0">
-            <span class="led"></span>
+            <span class="led" :class="{ ledLit: isLit }"></span>
         </div>
 
         <span class="key-text" v-if="text !== ''" v-html="formattedText"></span>
@@ -158,7 +179,7 @@ const isSelected = computed(() => {
     margin-top: -8px;
 }
 
-.led-lit {
+.ledLit {
     background-color: rgba(255, 38, 54, 1);
 }
 

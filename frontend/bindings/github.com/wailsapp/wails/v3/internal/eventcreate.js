@@ -12,13 +12,16 @@ import * as main$0 from "../../../../JamesBalazs/speed-editor-rebind/models.js";
 
 function configure() {
     Object.freeze(Object.assign($Create.Events, {
-        "heartbeat": $$createType0,
-        "keyPress": $$createType1,
+        "consolidateJogLeds": $$createType0,
+        "consolidateLeds": $$createType0,
+        "heartbeat": $$createType1,
+        "keyPress": $$createType2,
     }));
 }
 
 // Private type creation functions
-const $$createType0 = main$0.Heartbeat.createFrom;
-const $$createType1 = $Create.Array($Create.Any);
+const $$createType0 = $Create.Array($Create.Any);
+const $$createType1 = main$0.Heartbeat.createFrom;
+const $$createType2 = $Create.Array($Create.Any);
 
 configure();

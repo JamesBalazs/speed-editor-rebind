@@ -12,6 +12,8 @@ import type * as main$0 from "../../../../JamesBalazs/speed-editor-rebind/models
 declare module "@wailsio/runtime" {
     namespace Events {
         interface CustomEvents {
+            "consolidateJogLeds": number[];
+            "consolidateLeds": number[];
             "heartbeat": main$0.Heartbeat;
             "keyPress": number[];
         }
