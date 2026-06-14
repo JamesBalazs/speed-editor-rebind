@@ -98,7 +98,7 @@ func consolidateLeds() {
 				status.litFor = 0
 			}
 		} else if ok && key.JogLed != keys.LED_NONE {
-			if time.Now().Before(status.litAt.Add(status.litFor)) {
+			if (!status.litAt.IsZero() && status.litFor == 0) || time.Now().Before(status.litAt.Add(status.litFor)) {
 				jogLeds = append(jogLeds, key.JogLed)
 			} else {
 				status.litAt = time.Time{}
